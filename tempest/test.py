@@ -93,6 +93,7 @@ def get_service_list():
         'dashboard': CONF.service_available.horizon,
         'telemetry': CONF.service_available.ceilometer,
         'data_processing': CONF.service_available.sahara,
+        'monitoring' : CONF.service_available.monasca,
         'database': CONF.service_available.trove
     }
     return service_list

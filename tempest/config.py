@@ -171,6 +171,18 @@ IdentityFeatureGroup = [
                 help='Is the v3 identity API enabled'),
 ]
 
+monitoring_group = cfg.OptGroup(name='monitoring',
+                               title='Monitoring Service Options')
+
+MonitoringGroup = [
+    cfg.StrOpt('catalog_type',
+               default='monitoring',
+               help="Catalog type of the Monitoring service."),
+    cfg.StrOpt('region',
+               default='',
+               help="The endpoint type to use for the monitoring service."),
+]
+ 
 compute_group = cfg.OptGroup(name='compute',
                              title='Compute Service Options')
 
@@ -1035,6 +1047,9 @@ ServiceAvailableGroup = [
     cfg.BoolOpt('zaqar',
                 default=False,
                 help="Whether or not Zaqar is expected to be available"),
+    cfg.BoolOpt('monasca',  
+                default=True,
+                help="Whether or not monasca is expected to be available"),
 ]
 
 debug_group = cfg.OptGroup(name="debug",
@@ -1166,7 +1181,8 @@ _opts = [
     (debug_group, DebugGroup),
     (baremetal_group, BaremetalGroup),
     (input_scenario_group, InputScenarioGroup),
-    (negative_group, NegativeGroup)
+    (negative_group, NegativeGroup),
+    (monitoring_group, MonitoringGroup)
 ]
 
 
@@ -1230,6 +1246,7 @@ class TempestConfigPrivate(object):
         self.baremetal = _CONF.baremetal
         self.input_scenario = _CONF['input-scenario']
         self.negative = _CONF.negative
+        self.monitoring = cfg.CONF.monitoring
         _CONF.set_default('domain_name', self.identity.admin_domain_name,
                           group='identity')
         _CONF.set_default('alt_domain_name', self.identity.admin_domain_name,

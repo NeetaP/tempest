@@ -136,6 +136,8 @@ from tempest.services.volume.v2.json.qos_client import QosSpecsV2ClientJSON
 from tempest.services.volume.v2.json.snapshots_client import \
     SnapshotsV2ClientJSON
 from tempest.services.volume.v2.json.volumes_client import VolumesV2ClientJSON
+from tempest.services.monitoring.json.monitoring_client import \
+    MonitoringClientJSON
 
 CONF = config.CONF
 LOG = logging.getLogger(__name__)
@@ -171,6 +173,12 @@ class Manager(manager.Manager):
         self._set_volume_clients()
         self._set_object_storage_clients()
 
+        self.monitoring_client = MonitoringClientJSON(
+            self.auth_provider,
+            CONF.monitoring.catalog_type,
+            CONF.identity.region,
+            endpoint_type=CONF.monitoring.endpoint_type,
+            **self.default_params_with_timeout_values)
         self.baremetal_client = BaremetalClientJSON(
             self.auth_provider,
             CONF.baremetal.catalog_type,
